@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Danfoss ALADIN - Test Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --fg: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #ef4444;
+      --accent-2: #22c55e;
+      --card: #111827;
+      --border: #1f2937;
+      --input: #0b1220;
+      --focus: #3b82f6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 2rem;
+      background: linear-gradient(180deg, var(--bg), #0b1020 60%, #050914);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .brand { display: flex; align-items: center; gap: .75rem; font-weight: 700; letter-spacing: .5px; }
+    .brand .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; color: white; font-weight: 900; }
+    .subtitle { color: var(--muted); font-size: .95rem; }
+    .card { background: rgba(17,24,39,.7); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; backdrop-filter: blur(6px); box-shadow: 0 6px 24px rgba(0,0,0,.35); }
+    form { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+    .full { grid-column: 1 / -1; }
+    label { display: block; font-size: .9rem; color: var(--muted); margin-bottom: .35rem; }
+    input[type="text"], input[type="tel"] { width: 100%; background: var(--input); color: var(--fg); border: 1px solid var(--border); border-radius: .75rem; padding: .8rem 1rem; outline: none; transition: border .15s, box-shadow .15s; }
+    input[type="file"] { width: 100%; background: var(--input); color: var(--muted); border: 1px dashed var(--border); border-radius: .75rem; padding: .9rem 1rem; cursor: pointer; }
+    input:focus { border-color: var(--focus); box-shadow: 0 0 0 3px rgba(59,130,246,.25); }
+    .hint { font-size: .8rem; color: var(--muted); margin-top: .25rem; }
+    .row { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+    .actions { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
+    button { appearance: none; border: none; border-radius: .75rem; padding: .85rem 1.1rem; font-weight: 600; cursor: pointer; transition: transform .04s ease, box-shadow .15s ease, opacity .15s; }
+    .btn-primary { background: linear-gradient(180deg, #ef4444, #dc2626); color: white; box-shadow: 0 10px 24px rgba(239,68,68,.35); }
+    .btn-primary:active { transform: translateY(1px); }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .status { font-size: .9rem; color: var(--muted); }
+    .preview { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    .thumb { border: 1px solid var(--border); border-radius: .75rem; padding: .5rem; background: #0a0f1d; }
+    .thumb img { width: 100%; height: 140px; object-fit: cover; border-radius: .5rem; }
+    .resp { margin-top: 1rem; background: #0a0f1d; border: 1px solid var(--border); border-radius: 12px; padding: 1rem; overflow: auto; max-height: 40vh; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .9rem; color: #d1d5db; }
+    .ok { color: var(--accent-2); }
+    .err { color: var(--accent); }
+    @media (max-width: 720px) { form, .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">A</div>
+        <div>
+          <div style="font-size:1.15rem;">Danfoss ALADIN - TEST</div>
+          <div class="subtitle">Submit motor/VFD details & nameplate images</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="card">
+      <form id="aladin-form" novalidate>
+        <div>
+          <label for="customerName">Customer Name *</label>
+          <input id="customerName" name="customerName" type="text" placeholder="e.g., Acme Industries" required />
+        </div>
+        <div>
+          <label for="locationOfInstallation">Location of Installation *</label>
+          <input id="locationOfInstallation" name="locationOfInstallation" type="text" placeholder="e.g., Chennai, Tamil Nadu" required />
+        </div>
+        <div>
+          <label for="contactPerson">Contact Person *</label>
+          <input id="contactPerson" name="contactPerson" type="text" placeholder="e.g., John Doe" required />
+        </div>
+        <div>
+          <label for="mobileNumber">Mobile Number *</label>
+          <input id="mobileNumber" name="mobileNumber" type="tel" placeholder="e.g., +91-98765-43210" required />
+        </div>
+        <div>
+          <label for="motorType">Motor Type *</label>
+          <input id="motorType" name="motorType" type="text" placeholder="e.g., 3-Phase Induction" required />
+        </div>
+        <div>
+          <label for="vfdType">VFD Type *</label>
+          <input id="vfdType" name="vfdType" type="text" placeholder="e.g., Danfoss FC51" required />
+        </div>
+        <div class="full">
+          <label for="applicationType">Application Type *</label>
+          <input id="applicationType" name="applicationType" type="text" placeholder="e.g., Pump, Fan, Conveyor" required />
+        </div>
+
+        <div class="full">
+          <label for="vfdNameplate">VFD Nameplate (image) *</label>
+          <input id="vfdNameplate" name="vfdNameplate" type="file" accept="image/*" required />
+          <div class="hint">PNG/JPEG recommended • Max ~10 MB each (browser dependent)</div>
+        </div>
+        <div class="full">
+          <label for="motorNameplate">Motor Nameplate (image) *</label>
+          <input id="motorNameplate" name="motorNameplate" type="file" accept="image/*" required />
+        </div>
+
+        <div class="full preview" id="preview"></div>
+
+        <div class="full actions">
+          <button id="submitBtn" class="btn-primary" type="submit">Submit</button>
+          <button id="resetBtn" class="btn-ghost" type="button">Reset</button>
+          <span id="status" class="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="card" style="margin-top:1rem;">
+      <div style="margin-bottom:.5rem; color:var(--muted)">Response</div>
+      <pre id="responseBox" class="resp" aria-live="polite">Awaiting submission…</pre>
+    </section>
+  </div>
+
+  <script>
+    // ========================================
+    // CONFIGURATION
+    // ========================================
+    const CONFIG = {
+      WEBHOOK_URL: "http://localhost:3000/webhook", // Test server endpoint
+      MAX_FILE_BYTES: 10 * 1024 * 1024, // 10 MB per file
+      ACCEPTED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'],
+      REQUIRED_TEXT_FIELDS: [
+        { id: 'customerName', label: 'Customer Name' },
+        { id: 'locationOfInstallation', label: 'Location of Installation' },
+        { id: 'contactPerson', label: 'Contact Person' },
+        { id: 'mobileNumber', label: 'Mobile Number' },
+        { id: 'motorType', label: 'Motor Type' },
+        { id: 'vfdType', label: 'VFD Type' },
+        { id: 'applicationType', label: 'Application Type' }
+      ],
+      REQUIRED_FILE_FIELDS: [
+        { id: 'vfdNameplate', label: 'VFD Nameplate' },
+        { id: 'motorNameplate', label: 'Motor Nameplate' }
+      ]
+    };
+
+    // ========================================
+    // DOM REFERENCES
+    // ========================================
+    const DOM = {
+      form: document.getElementById('aladin-form'),
+      statusEl: document.getElementById('status'),
+      respEl: document.getElementById('responseBox'),
+      previewEl: document.getElementById('preview'),
+      submitBtn: document.getElementById('submitBtn'),
+      resetBtn: document.getElementById('resetBtn')
+    };
+
+    // ========================================
+    // UTILITY FUNCTIONS
+    // ========================================
+    const Utils = {
+      setStatus(msg, type = 'info') {
+        DOM.statusEl.textContent = msg || '';
+        DOM.statusEl.classList.remove('ok', 'err');
+        if (type === 'ok') DOM.statusEl.classList.add('ok');
+        if (type === 'err') DOM.statusEl.classList.add('err');
+      },
+
+      prettyPrint(data) {
+        try {
+          if (typeof data === 'string') {
+            const trimmed = data.trim();
+            if ((trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+                (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+              return JSON.stringify(JSON.parse(trimmed), null, 2);
+            }
+            return data;
+          }
+          return JSON.stringify(data, null, 2);
+        } catch (e) {
+          return String(data);
+        }
+      },
+
+      isValidPhoneNumber(phone) {
+        const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
+        return phoneRegex.test(phone);
+      },
+
+      formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+      }
+    };
+
+    // ========================================
+    // VALIDATION MODULE
+    // ========================================
+    const Validator = {
+      validateTextFields() {
+        const data = {};
+        const errors = [];
+
+        CONFIG.REQUIRED_TEXT_FIELDS.forEach(field => {
+          const element = document.getElementById(field.id);
+          const value = (element.value || '').trim();
+
+          if (!value) {
+            errors.push(`${field.label} is required`);
+            element.classList.add('error');
+          } else {
+            element.classList.remove('error');
+            data[field.id] = value;
+
+            if (field.id === 'mobileNumber' && !Utils.isValidPhoneNumber(value)) {
+              errors.push(`${field.label} format is invalid`);
+              element.classList.add('error');
+            }
+          }
+        });
+
+        if (errors.length > 0) {
+          throw new Error(errors.join('\n'));
+        }
+
+        return data;
+      },
+
+      validateFiles() {
+        const files = {};
+        const errors = [];
+
+        CONFIG.REQUIRED_FILE_FIELDS.forEach(field => {
+          const input = document.getElementById(field.id);
+          const file = (input.files && input.files[0]) ? input.files[0] : null;
+
+          if (!file) {
+            errors.push(`${field.label} image is required`);
+            input.classList.add('error');
+          } else {
+            input.classList.remove('error');
+
+            if (file.size > CONFIG.MAX_FILE_BYTES) {
+              errors.push(`${field.label} is too large (${Utils.formatFileSize(file.size)}). Max: 10 MB`);
+              input.classList.add('error');
+            }
+
+            if (!CONFIG.ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+              errors.push(`${field.label} must be an image (JPEG, PNG, WebP)`);
+              input.classList.add('error');
+            } else {
+              files[field.id] = file;
+            }
+          }
+        });
+
+        if (errors.length > 0) {
+          throw new Error(errors.join('\n'));
+        }
+
+        return files;
+      }
+    };
+
+    // ========================================
+    // UI MODULE
+    // ========================================
+    const UI = {
+      renderPreview(filesMap) {
+        DOM.previewEl.innerHTML = '';
+
+        Object.entries(filesMap).forEach(([fieldId, file]) => {
+          if (!file) return;
+
+          const box = document.createElement('div');
+          box.className = 'thumb';
+
+          const title = document.createElement('div');
+          title.style.cssText = 'font-size: .85rem; color: var(--muted); margin-bottom: .35rem;';
+          title.textContent = CONFIG.REQUIRED_FILE_FIELDS.find(f => f.id === fieldId)?.label || fieldId;
+
+          const sizeInfo = document.createElement('div');
+          sizeInfo.style.cssText = 'font-size: .75rem; color: var(--muted); margin-bottom: .5rem;';
+          sizeInfo.textContent = `${file.name} (${Utils.formatFileSize(file.size)})`;
+
+          const img = document.createElement('img');
+          const url = URL.createObjectURL(file);
+          img.src = url;
+          img.onload = () => URL.revokeObjectURL(url);
+
+          box.appendChild(title);
+          box.appendChild(sizeInfo);
+          box.appendChild(img);
+          DOM.previewEl.appendChild(box);
+        });
+      },
+
+      clearPreview() {
+        DOM.previewEl.innerHTML = '';
+      },
+
+      updateResponse(content) {
+        DOM.respEl.textContent = content;
+      },
+
+      clearErrorHighlights() {
+        const inputs = DOM.form.querySelectorAll('input');
+        inputs.forEach(input => input.classList.remove('error'));
+      }
+    };
+
+    // ========================================
+    // NETWORK MODULE
+    // ========================================
+    const Network = {
+      async submitToWebhook(formData) {
+        const response = await fetch(CONFIG.WEBHOOK_URL, {
+          method: 'POST',
+          body: formData
+        });
+
+        const contentType = response.headers.get('content-type') || '';
+        let payload;
+
+        if (contentType.includes('application/json')) {
+          payload = await response.json();
+        } else {
+          payload = await response.text();
+        }
+
+        return {
+          ok: response.ok,
+          status: response.status,
+          statusText: response.statusText,
+          payload: payload
+        };
+      }
+    };
+
+    // ========================================
+    // FORM HANDLER
+    // ========================================
+    const FormHandler = {
+      buildFormData(textData, files) {
+        const formData = new FormData();
+
+        Object.entries(textData).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+
+        Object.entries(files).forEach(([key, file]) => {
+          formData.append(key, file, file.name);
+        });
+
+        formData.append('source', 'Danfoss ALADIN Web UI');
+        formData.append('timestamp', new Date().toISOString());
+        formData.append('submittedAt', new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }));
+
+        return formData;
+      },
+
+      async handleSubmit(event) {
+        event.preventDefault();
+        UI.updateResponse('Processing submission...');
+        UI.clearErrorHighlights();
+
+        try {
+          Utils.setStatus('Validating form data...');
+          const textData = Validator.validateTextFields();
+          const files = Validator.validateFiles();
+
+          Utils.setStatus('Preparing data for submission...');
+          const formData = FormHandler.buildFormData(textData, files);
+
+          UI.renderPreview(files);
+
+          DOM.submitBtn.disabled = true;
+          Utils.setStatus('Submitting to webhook...');
+
+          const result = await Network.submitToWebhook(formData);
+
+          if (result.ok) {
+            Utils.setStatus(`✓ Submission successful (HTTP ${result.status})`, 'ok');
+            UI.updateResponse(Utils.prettyPrint(result.payload));
+          } else {
+            Utils.setStatus(`✗ Submission failed (HTTP ${result.status}: ${result.statusText})`, 'err');
+            UI.updateResponse(Utils.prettyPrint(result.payload));
+          }
+
+        } catch (error) {
+          Utils.setStatus('✗ ' + (error.message || 'Submission failed'), 'err');
+          UI.updateResponse(error.stack || error.message || String(error));
+          console.error('Form submission error:', error);
+        } finally {
+          DOM.submitBtn.disabled = false;
+        }
+      },
+
+      handleReset() {
+        DOM.form.reset();
+        UI.clearPreview();
+        UI.clearErrorHighlights();
+        Utils.setStatus('');
+        UI.updateResponse('Awaiting submission…');
+      }
+    };
+
+    // ========================================
+    // INITIALIZATION
+    // ========================================
+    function init() {
+      const style = document.createElement('style');
+      style.textContent = `
+        input.error {
+          border-color: var(--accent) !important;
+          box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+        }
+      `;
+      document.head.appendChild(style);
+
+      DOM.form.addEventListener('submit', FormHandler.handleSubmit);
+      DOM.resetBtn.addEventListener('click', FormHandler.handleReset);
+
+      const inputs = DOM.form.querySelectorAll('input');
+      inputs.forEach(input => {
+        input.addEventListener('input', () => {
+          input.classList.remove('error');
+        });
+      });
+
+      CONFIG.REQUIRED_FILE_FIELDS.forEach(field => {
+        const input = document.getElementById(field.id);
+        input.addEventListener('change', () => {
+          const files = {};
+          CONFIG.REQUIRED_FILE_FIELDS.forEach(f => {
+            const inp = document.getElementById(f.id);
+            if (inp.files && inp.files[0]) {
+              files[f.id] = inp.files[0];
+            }
+          });
+          if (Object.keys(files).length > 0) {
+            UI.renderPreview(files);
+          }
+        });
+      });
+
+      console.log('Danfoss ALADIN form initialized successfully');
+      console.log('Webhook URL:', CONFIG.WEBHOOK_URL);
+    }
+
+    init();
+  </script>
+</body>
+</html>
