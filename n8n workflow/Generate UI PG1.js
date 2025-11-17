@@ -127,7 +127,7 @@ var htmlPart1 = '<!DOCTYPE html>\n' +
 '\n' +
 '  <script>\n' +
 '    var CONFIG = {\n' +
-'      WEBHOOK_URL: "http://localhost:5678/webhook/aladin-submit",\n' +
+'      WEBHOOK_URL: "http://localhost:5678/webhook-test/test_submit",\n' +
 '      MAX_FILE_BYTES: 10 * 1024 * 1024,\n' +
 '      ACCEPTED_IMAGE_TYPES: ["image/jpeg", "image/png", "image/jpg", "image/webp"],\n' +
 '      REQUIRED_TEXT_FIELDS: [\n' +
@@ -293,12 +293,17 @@ var htmlPart1 = '<!DOCTYPE html>\n' +
 '        var response = await fetch(CONFIG.WEBHOOK_URL, { method: "POST", body: formData });\n' +
 '        var contentType = response.headers.get("content-type") || "";\n' +
 '        var payload;\n' +
-'        if (contentType.indexOf("application/json") > -1) {\n' +
+'        var isHtml = false;\n' +
+'        \n' +
+'        if (contentType.indexOf("text/html") > -1) {\n' +
+'          payload = await response.text();\n' +
+'          isHtml = true;\n' +
+'        } else if (contentType.indexOf("application/json") > -1) {\n' +
 '          payload = await response.json();\n' +
 '        } else {\n' +
 '          payload = await response.text();\n' +
 '        }\n' +
-'        return { ok: response.ok, status: response.status, statusText: response.statusText, payload: payload };\n' +
+'        return { ok: response.ok, status: response.status, statusText: response.statusText, payload: payload, isHtml: isHtml };\n' +
 '      }\n' +
 '    };\n' +
 '\n' +
@@ -331,11 +336,21 @@ var htmlPart1 = '<!DOCTYPE html>\n' +
 '          var formData = FormHandler.buildFormData(textData, files);\n' +
 '          UI.renderPreview(files);\n' +
 '          DOM.submitBtn.disabled = true;\n' +
-'          Utils.setStatus("Submitting to n8n webhook...");\n' +
+'          Utils.setStatus("Analyzing motor nameplate and generating configuration page...");\n' +
 '          var result = await Network.submitToWebhook(formData);\n' +
 '          if (result.ok) {\n' +
-'            Utils.setStatus("✓ Submission successful (HTTP " + result.status + ")", "ok");\n' +
-'            UI.updateResponse(Utils.prettyPrint(result.payload));\n' +
+'            if (result.isHtml) {\n' +
+'              Utils.setStatus("✓ Analysis complete! Loading motor configuration...", "ok");\n' +
+'              UI.updateResponse("Redirecting to motor configuration page...");\n' +
+'              setTimeout(function() {\n' +
+'                document.open();\n' +
+'                document.write(result.payload);\n' +
+'                document.close();\n' +
+'              }, 800);\n' +
+'            } else {\n' +
+'              Utils.setStatus("✓ Submission successful (HTTP " + result.status + ")", "ok");\n' +
+'              UI.updateResponse(Utils.prettyPrint(result.payload));\n' +
+'            }\n' +
 '          } else {\n' +
 '            Utils.setStatus("✗ Submission failed (HTTP " + result.status + ": " + result.statusText + ")", "err");\n' +
 '            UI.updateResponse(Utils.prettyPrint(result.payload));\n' +
