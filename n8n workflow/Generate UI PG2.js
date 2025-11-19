@@ -5,7 +5,20 @@
 // Input: $json should contain the motor data response
 // Output: Returns HTML page as binary for immediate display
 
+// Extract customer data from webhook
+var webhookData = $('PG2 Webhook').first().json.body || {};
+var customerData = {
+  customerName: webhookData.customerName || '',
+  locationOfInstallation: webhookData.locationOfInstallation || '',
+  contactPerson: webhookData.contactPerson || '',
+  mobileNumber: webhookData.mobileNumber || '',
+  motorType: webhookData.motorType || '',
+  vfdType: webhookData.vfdType || '',
+  applicationType: webhookData.applicationType || ''
+};
+
 var motorDataJson = JSON.stringify($json);
+var customerDataJson = JSON.stringify(customerData);
 
 var htmlContent = '<!DOCTYPE html>' +
 '<html lang="en">' +
@@ -50,6 +63,39 @@ var htmlContent = '<!DOCTYPE html>' +
 '    .header .subtitle {' +
 '      color: #6b7280;' +
 '      font-size: 14px;' +
+'    }' +
+'    .customer-info {' +
+'      background: #f0f9ff;' +
+'      padding: 20px;' +
+'      border-radius: 8px;' +
+'      margin-bottom: 25px;' +
+'      border-left: 4px solid #0284c7;' +
+'    }' +
+'    .customer-info h3 {' +
+'      color: #0c4a6e;' +
+'      font-size: 16px;' +
+'      margin-bottom: 12px;' +
+'      font-weight: 600;' +
+'    }' +
+'    .customer-info-grid {' +
+'      display: grid;' +
+'      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));' +
+'      gap: 12px;' +
+'    }' +
+'    .customer-info-item {' +
+'      display: flex;' +
+'      flex-direction: column;' +
+'    }' +
+'    .customer-info-label {' +
+'      font-size: 12px;' +
+'      color: #64748b;' +
+'      font-weight: 600;' +
+'      margin-bottom: 4px;' +
+'    }' +
+'    .customer-info-value {' +
+'      font-size: 14px;' +
+'      color: #1e293b;' +
+'      font-weight: 500;' +
 '    }' +
 '    .model-info {' +
 '      background: #f3f4f6;' +
@@ -239,6 +285,7 @@ var htmlContent = '<!DOCTYPE html>' +
 '  <script>' +
 '    (function() {' +
 '      var motorData = ' + motorDataJson + ';' +
+'      var customerData = ' + customerDataJson + ';' +
 '      var parsedData = null;' +
 '      var selectedRating = null;' +
 '' +
@@ -281,6 +328,64 @@ var htmlContent = '<!DOCTYPE html>' +
 '          "<div class=\\"error-message\\">" + message + "</div>";' +
 '      }' +
 '' +
+'      function renderCustomerInfo() {' +
+'        var html = "<div class=\\"customer-info\\">";' +
+'        html += "<h3>Customer Information</h3>";' +
+'        html += "<div class=\\"customer-info-grid\\">";' +
+'        ' +
+'        if (customerData.customerName) {' +
+'          html += "<div class=\\"customer-info-item\\">";' +
+'          html += "<span class=\\"customer-info-label\\">Customer Name:</span>";' +
+'          html += "<span class=\\"customer-info-value\\">" + customerData.customerName + "</span>";' +
+'          html += "</div>";' +
+'        }' +
+'        ' +
+'        if (customerData.locationOfInstallation) {' +
+'          html += "<div class=\\"customer-info-item\\">";' +
+'          html += "<span class=\\"customer-info-label\\">Location:</span>";' +
+'          html += "<span class=\\"customer-info-value\\">" + customerData.locationOfInstallation + "</span>";' +
+'          html += "</div>";' +
+'        }' +
+'        ' +
+'        if (customerData.contactPerson) {' +
+'          html += "<div class=\\"customer-info-item\\">";' +
+'          html += "<span class=\\"customer-info-label\\">Contact Person:</span>";' +
+'          html += "<span class=\\"customer-info-value\\">" + customerData.contactPerson + "</span>";' +
+'          html += "</div>";' +
+'        }' +
+'        ' +
+'        if (customerData.mobileNumber) {' +
+'          html += "<div class=\\"customer-info-item\\">";' +
+'          html += "<span class=\\"customer-info-label\\">Mobile:</span>";' +
+'          html += "<span class=\\"customer-info-value\\">" + customerData.mobileNumber + "</span>";' +
+'          html += "</div>";' +
+'        }' +
+'        ' +
+'        if (customerData.motorType) {' +
+'          html += "<div class=\\"customer-info-item\\">";' +
+'          html += "<span class=\\"customer-info-label\\">Motor Type:</span>";' +
+'          html += "<span class=\\"customer-info-value\\">" + customerData.motorType + "</span>";' +
+'          html += "</div>";' +
+'        }' +
+'        ' +
+'        if (customerData.vfdType) {' +
+'          html += "<div class=\\"customer-info-item\\">";' +
+'          html += "<span class=\\"customer-info-label\\">VFD Type:</span>";' +
+'          html += "<span class=\\"customer-info-value\\">" + customerData.vfdType + "</span>";' +
+'          html += "</div>";' +
+'        }' +
+'        ' +
+'        if (customerData.applicationType) {' +
+'          html += "<div class=\\"customer-info-item\\">";' +
+'          html += "<span class=\\"customer-info-label\\">Application:</span>";' +
+'          html += "<span class=\\"customer-info-value\\">" + customerData.applicationType + "</span>";' +
+'          html += "</div>";' +
+'        }' +
+'        ' +
+'        html += "</div></div>";' +
+'        return html;' +
+'      }' +
+'' +
 '      function renderTable() {' +
 '        var headers = ["Select"];' +
 '        if (parsedData.ratings.length > 0) {' +
@@ -291,7 +396,8 @@ var htmlContent = '<!DOCTYPE html>' +
 '          }' +
 '        }' +
 '' +
-'        var tableHtml = "<div class=\\"model-info\\"><strong>Motor Model: " + parsedData.model_number + "</strong></div>";' +
+'        var tableHtml = renderCustomerInfo();' +
+'        tableHtml += "<div class=\\"model-info\\"><strong>Motor Model: " + parsedData.model_number + "</strong></div>";' +
 '        tableHtml += "<h2 class=\\"section-title\\">Available Ratings</h2>";' +
 '        tableHtml += "<div class=\\"ratings-table-wrapper\\">";' +
 '        tableHtml += "<table><thead><tr>";' +
@@ -415,8 +521,18 @@ var htmlContent = '<!DOCTYPE html>' +
 '        if (!selectedRating) return;' +
 '' +
 '        var config = {' +
-'          model_number: parsedData.model_number,' +
-'          selected_rating: selectedRating,' +
+'          customer_info: {' +
+'            customer_name: customerData.customerName || "",' +
+'            location_of_installation: customerData.locationOfInstallation || "",' +
+'            contact_person: customerData.contactPerson || "",' +
+'            phone: customerData.mobileNumber || "",' +
+'            application: customerData.applicationType || "",' +
+'            submission_timestamp: new Date().toISOString()' +
+'          },' +
+'          motor_data: {' +
+'            model_number: parsedData.model_number,' +
+'            selected_rating: selectedRating' +
+'          },' +
 '          configuration: {' +
 '            control_mode: parseInt(document.getElementById("controlMode").value),' +
 '            motor_control_principle: parseInt(document.getElementById("motorControlPrinciple").value),' +
@@ -439,21 +555,36 @@ var htmlContent = '<!DOCTYPE html>' +
 '      function handleSubmit() {' +
 '        var config = JSON.parse(document.getElementById("jsonOutput").textContent);' +
 '        var messageContainer = document.getElementById("messageContainer");' +
+'        var submitBtn = document.getElementById("submitBtn");' +
 '        ' +
-'        try {' +
-'          var textarea = document.createElement("textarea");' +
-'          textarea.value = JSON.stringify(config, null, 2);' +
-'          document.body.appendChild(textarea);' +
-'          textarea.select();' +
-'          document.execCommand("copy");' +
-'          document.body.removeChild(textarea);' +
-'          messageContainer.innerHTML = "<div class=\\"success-message\\"><strong>Configuration submitted successfully!</strong><br>The configuration has been copied to your clipboard.<br>You can paste it anywhere you need.</div>";' +
-'        } catch (e) {' +
-'          messageContainer.innerHTML = "<div class=\\"success-message\\"><strong>Configuration ready!</strong><br>Please copy the JSON configuration shown above.</div>";' +
-'        }' +
+'        submitBtn.disabled = true;' +
+'        submitBtn.textContent = "Submitting...";' +
+'        messageContainer.innerHTML = "<div class=\\"loading\\">Submitting configuration to server...</div>";' +
 '        ' +
+'        var xhr = new XMLHttpRequest();' +
+'        xhr.open("POST", "http://localhost:5678/webhook-test/final-submit", true);' +
+'        xhr.setRequestHeader("Content-Type", "application/json");' +
+'        ' +
+'        xhr.onload = function() {' +
+'          if (xhr.status >= 200 && xhr.status < 300) {' +
+'            messageContainer.innerHTML = "<div class=\\"success-message\\"><strong>Configuration submitted successfully!</strong><br>Your motor configuration has been sent to the server.<br>Status: " + xhr.status + "</div>";' +
+'            submitBtn.textContent = "Submitted ✓";' +
+'            console.log("Server Response:", xhr.responseText);' +
+'          } else {' +
+'            messageContainer.innerHTML = "<div class=\\"error-message\\"><strong>Submission failed!</strong><br>Server returned status: " + xhr.status + "<br>Please try again or contact support.</div>";' +
+'            submitBtn.textContent = "Submit Configuration";' +
+'            submitBtn.disabled = false;' +
+'          }' +
+'        };' +
+'        ' +
+'        xhr.onerror = function() {' +
+'          messageContainer.innerHTML = "<div class=\\"error-message\\"><strong>Network error!</strong><br>Could not connect to the server.<br>Please check if the webhook URL is correct and the server is running.</div>";' +
+'          submitBtn.textContent = "Submit Configuration";' +
+'          submitBtn.disabled = false;' +
+'        };' +
+'        ' +
+'        xhr.send(JSON.stringify(config));' +
 '        console.log("Motor Configuration:", config);' +
-'        document.getElementById("submitBtn").disabled = true;' +
 '      }' +
 '' +
 '      function handleReset() {' +
