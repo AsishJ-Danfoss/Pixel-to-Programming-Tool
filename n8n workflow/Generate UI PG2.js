@@ -559,31 +559,45 @@ var htmlContent = '<!DOCTYPE html>' +
 '        ' +
 '        submitBtn.disabled = true;' +
 '        submitBtn.textContent = "Submitting...";' +
-'        messageContainer.innerHTML = "<div class=\\"loading\\">Submitting configuration to server...</div>";' +
+'        messageContainer.innerHTML = "<div class=\\"loading\\">Generating Excel file...</div>";' +
 '        ' +
-'        var xhr = new XMLHttpRequest();' +
-'        xhr.open("POST", "http://localhost:5678/webhook-test/final-submit", true);' +
-'        xhr.setRequestHeader("Content-Type", "application/json");' +
-'        ' +
-'        xhr.onload = function() {' +
-'          if (xhr.status >= 200 && xhr.status < 300) {' +
-'            messageContainer.innerHTML = "<div class=\\"success-message\\"><strong>Configuration submitted successfully!</strong><br>Your motor configuration has been sent to the server.<br>Status: " + xhr.status + "</div>";' +
-'            submitBtn.textContent = "Submitted ✓";' +
-'            console.log("Server Response:", xhr.responseText);' +
+'        fetch("http://localhost:5678/webhook-test/final-submit", {' +
+'          method: "POST",' +
+'          headers: { "Content-Type": "application/json" },' +
+'          body: JSON.stringify(config)' +
+'        })' +
+'        .then(function(response) {' +
+'          if (!response.ok) throw new Error("Server returned " + response.status);' +
+'          ' +
+'          var contentType = response.headers.get("content-type") || "";' +
+'          ' +
+'          if (contentType.indexOf("application/vnd.openxmlformats") > -1 || ' +
+'              contentType.indexOf("application/octet-stream") > -1) {' +
+'            return response.blob().then(function(blob) {' +
+'              var url = window.URL.createObjectURL(blob);' +
+'              var a = document.createElement("a");' +
+'              a.href = url;' +
+'              a.download = "VFD_Config_" + (customerData.customerName || "Customer").replace(/[^a-z0-9]/gi, "_") + ".xlsx";' +
+'              document.body.appendChild(a);' +
+'              a.click();' +
+'              window.URL.revokeObjectURL(url);' +
+'              document.body.removeChild(a);' +
+'              ' +
+'              messageContainer.innerHTML = "<div class=\\"success-message\\"><strong>Success!</strong><br>Excel file downloaded successfully.<br>Check your Downloads folder.</div>";' +
+'              submitBtn.textContent = "Submitted ✓";' +
+'            });' +
 '          } else {' +
-'            messageContainer.innerHTML = "<div class=\\"error-message\\"><strong>Submission failed!</strong><br>Server returned status: " + xhr.status + "<br>Please try again or contact support.</div>";' +
-'            submitBtn.textContent = "Submit Configuration";' +
-'            submitBtn.disabled = false;' +
+'            return response.text().then(function(text) {' +
+'              messageContainer.innerHTML = "<div class=\\"success-message\\"><strong>Submitted!</strong><br>" + text + "</div>";' +
+'              submitBtn.textContent = "Submitted ✓";' +
+'            });' +
 '          }' +
-'        };' +
-'        ' +
-'        xhr.onerror = function() {' +
-'          messageContainer.innerHTML = "<div class=\\"error-message\\"><strong>Network error!</strong><br>Could not connect to the server.<br>Please check if the webhook URL is correct and the server is running.</div>";' +
+'        })' +
+'        .catch(function(error) {' +
+'          messageContainer.innerHTML = "<div class=\\"error-message\\"><strong>Error!</strong><br>" + error.message + "<br>Please try again.</div>";' +
 '          submitBtn.textContent = "Submit Configuration";' +
 '          submitBtn.disabled = false;' +
-'        };' +
-'        ' +
-'        xhr.send(JSON.stringify(config));' +
+'        });' +
 '        console.log("Motor Configuration:", config);' +
 '      }' +
 '' +
