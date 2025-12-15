@@ -1,0 +1,34 @@
+graph TD
+    A["🌐 User Interface Layer"] --> B["PG2 Webhook"]
+    B --> C["Generate UI PG2.js<br/>(Node.js)"]
+    C --> D["Display Motor Config UI<br/>+ Customer Data"]
+    D --> E["Final Submit Webhook"]
+    
+    E --> F["Excel Mapping Layer"]
+    F --> G["update_excel.js<br/>(Node.js)"]
+    G --> H["Read Template:<br/>VFDConfigFile_Template1.xlsx"]
+    H --> I["Map JSON to Excel Cells<br/>(11 cell mappings)"]
+    I --> J["Output:<br/>OutputFileVFD.xlsx"]
+    
+    J --> K["MCT-10 Automation Layer"]
+    K --> L["mct10_automation.py<br/>(Python + pywinauto)"]
+    L --> M["Start MCT-10 Software"]
+    M --> N["Import Excel File"]
+    N --> O["Save as SSP Format"]
+    O --> P["Output:<br/>OutputFileVFD.ssp"]
+    
+    Q["n8n Workflow Orchestration"] -.->|triggers| B
+    Q -.->|executes| G
+    Q -.->|executes| L
+    
+    R["VFD Configuration Data"] -.->|input| C
+    S["Motor Parameters"] -.-> |input| I
+    T["MCT-10 UI Automation"] -.-> |uses| L
+    
+    style A fill:#e1f5ff
+    style F fill:#f3e5f5
+    style K fill:#e8f5e9
+    style Q fill:#fff3e0
+    style P fill:#ffebee
+    style J fill:#fce4ec
+    style D fill:#f1f8e9
