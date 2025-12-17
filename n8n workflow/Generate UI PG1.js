@@ -7,6 +7,24 @@ var htmlPart1 = '<!DOCTYPE html>\n' +
 '  <meta charset="utf-8" />\n' +
 '  <title>Danfoss ALADIN</title>\n' +
 '  <meta name="viewport" content="width=device-width, initial-scale=1" />\n' +
+'  <script>\n' +
+'    (function() {\n' +
+'      var isAuthenticated = sessionStorage.getItem("aladin_authenticated");\n' +
+'      if (!isAuthenticated || isAuthenticated !== "true") {\n' +
+'        window.location.href = "http://localhost:5678/webhook-test/login";\n' +
+'        return;\n' +
+'      }\n' +
+'      var loginTime = sessionStorage.getItem("aladin_login_time");\n' +
+'      if (loginTime) {\n' +
+'        var elapsed = (new Date() - new Date(loginTime)) / 1000 / 60;\n' +
+'        if (elapsed > 60) {\n' +
+'          sessionStorage.clear();\n' +
+'          window.location.href = "http://localhost:5678/webhook-test/login";\n' +
+'        }\n' +
+'      }\n' +
+'      console.log("Auth check passed - User:", sessionStorage.getItem("aladin_username"));\n' +
+'    })();\n' +
+'  </script>\n' +
 '  <style>\n' +
 '    :root {\n' +
 '      --bg: #0f172a;\n' +

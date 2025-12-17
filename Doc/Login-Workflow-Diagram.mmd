@@ -1,0 +1,54 @@
+flowchart TD
+    Start([User Visits Site]) --> Login[Login Webhook<br/>GET /login]
+    
+    Login --> GenLogin[Generate Login UI<br/>JavaScript Code Node]
+    GenLogin --> ResLogin[Respond to Login<br/>Binary HTML]
+    ResLogin --> LoginPage[🔐 Login Page Displayed]
+    
+    LoginPage --> Validate{Credentials<br/>Valid?}
+    Validate -->|No| Error[❌ Show Error Message]
+    Error --> LoginPage
+    
+    Validate -->|Yes| Session[✅ Store Session<br/>sessionStorage]
+    Session --> RedirectPG1[Redirect to PG1]
+    
+    RedirectPG1 --> PG1Web[PG1 Webhook<br/>GET /test_url]
+    PG1Web --> AuthCheck{Check<br/>Session?}
+    
+    AuthCheck -->|Not Authenticated| BackLogin[↩️ Redirect to Login]
+    BackLogin --> Login
+    
+    AuthCheck -->|Authenticated| Timeout{Session<br/>Expired?}
+    Timeout -->|Yes > 60min| BackLogin
+    
+    Timeout -->|No - Valid| GenPG1[Generate UI PG1<br/>With Auth Check]
+    GenPG1 --> ResPG1[Respond to PG1 UI]
+    ResPG1 --> FormPG1[📋 PG1 Form Displayed]
+    
+    FormPG1 --> SubmitPG1[User Submits Form]
+    SubmitPG1 --> PG2Web[PG2 Webhook<br/>POST to server]
+    
+    PG2Web --> GenPG2[Generate UI PG2<br/>Motor Configuration]
+    GenPG2 --> ResPG2[Respond to PG2 UI]
+    ResPG2 --> FormPG2[⚙️ PG2 Form Displayed]
+    
+    FormPG2 --> SubmitPG2[User Configures & Submits]
+    SubmitPG2 --> FinalWeb[Final Submit Webhook<br/>POST configuration]
+    
+    FinalWeb --> CodeJS[Code in JavaScript<br/>Generate Excel]
+    CodeJS --> ResExcel[Respond with Excel File]
+    ResExcel --> Download[📥 Excel Downloaded]
+    
+    style Login fill:#667eea,color:#fff
+    style LoginPage fill:#a78bfa,color:#fff
+    style Session fill:#10b981,color:#fff
+    style PG1Web fill:#667eea,color:#fff
+    style AuthCheck fill:#f59e0b,color:#fff
+    style GenPG1 fill:#667eea,color:#fff
+    style FormPG1 fill:#a78bfa,color:#fff
+    style PG2Web fill:#667eea,color:#fff
+    style FormPG2 fill:#a78bfa,color:#fff
+    style FinalWeb fill:#667eea,color:#fff
+    style Download fill:#10b981,color:#fff
+    style Error fill:#ef4444,color:#fff
+    style BackLogin fill:#ef4444,color:#fff
