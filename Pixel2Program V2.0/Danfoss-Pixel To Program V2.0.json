@@ -1,0 +1,357 @@
+{
+  "name": "Danfoss-Pixel To Program V2.0",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "login",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -304,
+        -208
+      ],
+      "id": "9a1364cc-33ea-4ea0-b664-aaf6aa1e2d40",
+      "name": "Login - Webhook",
+      "webhookId": "578da760-4cfe-4995-9e6e-a618449a23ab"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node: Login Page UI\n// This node generates the login page HTML\n// Place this BEFORE the Generate UI PG1 node\n\nvar loginHtml = '<!DOCTYPE html>' +\n'<html lang=\"en\">' +\n'<head>' +\n'  <meta charset=\"UTF-8\">' +\n'  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">' +\n'  <title>Login - Danfoss ALADIN</title>' +\n'  <style>' +\n'    * {' +\n'      margin: 0;' +\n'      padding: 0;' +\n'      box-sizing: border-box;' +\n'    }' +\n'    body {' +\n'      font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif;' +\n'      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);' +\n'      min-height: 100vh;' +\n'      display: flex;' +\n'      justify-content: center;' +\n'      align-items: center;' +\n'      padding: 20px;' +\n'    }' +\n'    .login-container {' +\n'      background: white;' +\n'      border-radius: 12px;' +\n'      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);' +\n'      padding: 40px;' +\n'      width: 100%;' +\n'      max-width: 420px;' +\n'      animation: slideIn 0.5s ease-out;' +\n'    }' +\n'    @keyframes slideIn {' +\n'      from {' +\n'        opacity: 0;' +\n'        transform: translateY(-20px);' +\n'      }' +\n'      to {' +\n'        opacity: 1;' +\n'        transform: translateY(0);' +\n'      }' +\n'    }' +\n'    .branding {' +\n'      text-align: center;' +\n'      margin-bottom: 30px;' +\n'    }' +\n'    .branding h1 {' +\n'      font-size: 32px;' +\n'      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);' +\n'      -webkit-background-clip: text;' +\n'      -webkit-text-fill-color: transparent;' +\n'      background-clip: text;' +\n'      margin-bottom: 8px;' +\n'      font-weight: 700;' +\n'      letter-spacing: -0.5px;' +\n'    }' +\n'    .branding .subtitle {' +\n'      color: #6b7280;' +\n'      font-size: 14px;' +\n'      font-weight: 500;' +\n'    }' +\n'    .divider {' +\n'      height: 1px;' +\n'      background: linear-gradient(90deg, transparent, #e5e7eb 20%, #e5e7eb 80%, transparent);' +\n'      margin: 25px 0;' +\n'    }' +\n'    .form-group {' +\n'      margin-bottom: 20px;' +\n'    }' +\n'    label {' +\n'      display: block;' +\n'      font-size: 14px;' +\n'      font-weight: 600;' +\n'      color: #374151;' +\n'      margin-bottom: 8px;' +\n'    }' +\n'    input[type=\"text\"],' +\n'    input[type=\"password\"] {' +\n'      width: 100%;' +\n'      padding: 12px 16px;' +\n'      border: 2px solid #e5e7eb;' +\n'      border-radius: 8px;' +\n'      font-size: 15px;' +\n'      transition: all 0.3s ease;' +\n'      outline: none;' +\n'    }' +\n'    input[type=\"text\"]:focus,' +\n'    input[type=\"password\"]:focus {' +\n'      border-color: #667eea;' +\n'      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);' +\n'    }' +\n'    input.error {' +\n'      border-color: #ef4444;' +\n'      animation: shake 0.4s ease;' +\n'    }' +\n'    @keyframes shake {' +\n'      0%, 100% { transform: translateX(0); }' +\n'      25% { transform: translateX(-10px); }' +\n'      75% { transform: translateX(10px); }' +\n'    }' +\n'    .btn-login {' +\n'      width: 100%;' +\n'      padding: 14px;' +\n'      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);' +\n'      color: white;' +\n'      border: none;' +\n'      border-radius: 8px;' +\n'      font-size: 16px;' +\n'      font-weight: 600;' +\n'      cursor: pointer;' +\n'      transition: all 0.3s ease;' +\n'      margin-top: 10px;' +\n'    }' +\n'    .btn-login:hover {' +\n'      transform: translateY(-2px);' +\n'      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);' +\n'    }' +\n'    .btn-login:active {' +\n'      transform: translateY(0);' +\n'    }' +\n'    .btn-login:disabled {' +\n'      background: #9ca3af;' +\n'      cursor: not-allowed;' +\n'      transform: none;' +\n'    }' +\n'    .error-message {' +\n'      background: #fee2e2;' +\n'      color: #991b1b;' +\n'      padding: 12px;' +\n'      border-radius: 8px;' +\n'      margin-bottom: 20px;' +\n'      font-size: 14px;' +\n'      border-left: 4px solid #ef4444;' +\n'      display: none;' +\n'      animation: slideIn 0.3s ease-out;' +\n'    }' +\n'    .error-message.show {' +\n'      display: block;' +\n'    }' +\n'    .loading-spinner {' +\n'      display: inline-block;' +\n'      width: 16px;' +\n'      height: 16px;' +\n'      border: 2px solid white;' +\n'      border-top-color: transparent;' +\n'      border-radius: 50%;' +\n'      animation: spin 0.6s linear infinite;' +\n'      margin-right: 8px;' +\n'      vertical-align: middle;' +\n'    }' +\n'    @keyframes spin {' +\n'      to { transform: rotate(360deg); }' +\n'    }' +\n'    .footer {' +\n'      text-align: center;' +\n'      margin-top: 25px;' +\n'      color: #9ca3af;' +\n'      font-size: 13px;' +\n'    }' +\n'    @media (max-width: 480px) {' +\n'      .login-container {' +\n'        padding: 30px 20px;' +\n'      }' +\n'      .branding h1 {' +\n'        font-size: 28px;' +\n'      }' +\n'    }' +\n'  </style>' +\n'</head>' +\n'<body>' +\n'  <div class=\"login-container\">' +\n'    <div class=\"branding\">' +\n'      <h1>Pixel to Programming</h1>' +\n'      <p class=\"subtitle\">Danfoss ALADIN System</p>' +\n'    </div>' +\n'    ' +\n'    <div class=\"divider\"></div>' +\n'    ' +\n'    <div id=\"errorMessage\" class=\"error-message\"></div>' +\n'    ' +\n'    <form id=\"loginForm\" novalidate>' +\n'      <div class=\"form-group\">' +\n'        <label for=\"username\">Username</label>' +\n'        <input type=\"text\" id=\"username\" name=\"username\" placeholder=\"Enter your username\" required autocomplete=\"username\">' +\n'      </div>' +\n'      ' +\n'      <div class=\"form-group\">' +\n'        <label for=\"password\">Password</label>' +\n'        <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Enter your password\" required autocomplete=\"current-password\">' +\n'      </div>' +\n'      ' +\n'      <button type=\"submit\" class=\"btn-login\" id=\"loginBtn\">' +\n'        Sign In' +\n'      </button>' +\n'    </form>' +\n'    ' +\n'    <div class=\"footer\">' +\n'      &copy; 2025 Danfoss. All rights reserved.' +\n'    </div>' +\n'  </div>' +\n'  ' +\n'  <script>' +\n'    (function() {' +\n'      var CONFIG = {' +\n'        CREDENTIALS: {' +\n'          \"admin\": \"admin123\",' +\n'          \"danfoss\": \"danfoss@2024\",' +\n'          \"user\": \"password123\"' +\n'        },' +\n'        REDIRECT_URL: \"http://localhost:5678/webhook-test/test_url\"' +\n'      };' +\n'      ' +\n'      var DOM = {' +\n'        form: document.getElementById(\"loginForm\"),' +\n'        username: document.getElementById(\"username\"),' +\n'        password: document.getElementById(\"password\"),' +\n'        loginBtn: document.getElementById(\"loginBtn\"),' +\n'        errorMessage: document.getElementById(\"errorMessage\")' +\n'      };' +\n'      ' +\n'      function showError(message) {' +\n'        DOM.errorMessage.textContent = message;' +\n'        DOM.errorMessage.classList.add(\"show\");' +\n'        DOM.username.classList.add(\"error\");' +\n'        DOM.password.classList.add(\"error\");' +\n'        ' +\n'        setTimeout(function() {' +\n'          DOM.errorMessage.classList.remove(\"show\");' +\n'        }, 4000);' +\n'      }' +\n'      ' +\n'      function clearErrors() {' +\n'        DOM.errorMessage.classList.remove(\"show\");' +\n'        DOM.username.classList.remove(\"error\");' +\n'        DOM.password.classList.remove(\"error\");' +\n'      }' +\n'      ' +\n'      function validateCredentials(username, password) {' +\n'        return CONFIG.CREDENTIALS.hasOwnProperty(username) && ' +\n'               CONFIG.CREDENTIALS[username] === password;' +\n'      }' +\n'      ' +\n'      function setLoading(isLoading) {' +\n'        if (isLoading) {' +\n'          DOM.loginBtn.disabled = true;' +\n'          DOM.loginBtn.innerHTML = \"<span class=\\\\\"loading-spinner\\\\\"></span>Signing in...\";' +\n'        } else {' +\n'          DOM.loginBtn.disabled = false;' +\n'          DOM.loginBtn.textContent = \"Sign In\";' +\n'        }' +\n'      }' +\n'      ' +\n'      function handleLogin(event) {' +\n'        event.preventDefault();' +\n'        clearErrors();' +\n'        ' +\n'        var username = DOM.username.value.trim();' +\n'        var password = DOM.password.value;' +\n'        ' +\n'        if (!username || !password) {' +\n'          showError(\"Please enter both username and password\");' +\n'          return;' +\n'        }' +\n'        ' +\n'        setLoading(true);' +\n'        ' +\n'        setTimeout(function() {' +\n'          if (validateCredentials(username, password)) {' +\n'            sessionStorage.setItem(\"aladin_authenticated\", \"true\");' +\n'            sessionStorage.setItem(\"aladin_username\", username);' +\n'            sessionStorage.setItem(\"aladin_login_time\", new Date().toISOString());' +\n'            ' +\n'            DOM.loginBtn.innerHTML = \"✓ Success! Redirecting...\";' +\n'            ' +\n'            setTimeout(function() {' +\n'              window.location.href = CONFIG.REDIRECT_URL;' +\n'            }, 800);' +\n'          } else {' +\n'            setLoading(false);' +\n'            showError(\"Invalid username or password. Please try again.\");' +\n'            DOM.password.value = \"\";' +\n'            DOM.password.focus();' +\n'          }' +\n'        }, 600);' +\n'      }' +\n'      ' +\n'      DOM.form.addEventListener(\"submit\", handleLogin);' +\n'      ' +\n'      DOM.username.addEventListener(\"input\", clearErrors);' +\n'      DOM.password.addEventListener(\"input\", clearErrors);' +\n'      ' +\n'      DOM.username.focus();' +\n'      ' +\n'      console.log(\"Login page initialized - Danfoss ALADIN\");' +\n'    })();' +\n'  </script>' +\n'</body>' +\n'</html>';\n\n// Return as binary for n8n\nreturn [\n  {\n    json: {},\n    binary: {\n      data: {\n        data: Buffer.from(loginHtml).toString('base64'),\n        mimeType: 'text/html',\n        fileName: 'login.html'\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        -208
+      ],
+      "id": "3993dd8e-7715-4bec-870c-d98e4af3e230",
+      "name": "Login Page - UI"
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        112,
+        -208
+      ],
+      "id": "dac1e510-2e08-428e-8ce6-57373989cb54",
+      "name": "Login - Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "path": "test_url",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -304,
+        0
+      ],
+      "id": "6408bb9c-40f9-4928-a98b-f1da55936a5d",
+      "name": "Customer Input - Webhook",
+      "webhookId": "e2630fee-88fc-4240-905f-2f9e1fa2853b",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node: returns the HTML UI as binary\n// NOTE: Using string concatenation instead of template literals for n8n vm2 compatibility\n\nvar htmlPart1 = '<!DOCTYPE html>\\n' +\n'<html lang=\"en\">\\n' +\n'<head>\\n' +\n'  <meta charset=\"utf-8\" />\\n' +\n'  <title>Danfoss ALADIN - Customer Information</title>\\n' +\n'  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\\n' +\n'  <script>\\n' +\n'    (function() {\\n' +\n'      var isAuthenticated = sessionStorage.getItem(\"aladin_authenticated\");\\n' +\n'      if (!isAuthenticated || isAuthenticated !== \"true\") {\\n' +\n'        window.location.href = \"https://aladin-webapp.net/webhook/login\";\\n' +\n'        return;\\n' +\n'      }\\n' +\n'      var loginTime = sessionStorage.getItem(\"aladin_login_time\");\\n' +\n'      if (loginTime) {\\n' +\n'        var elapsed = (new Date() - new Date(loginTime)) / 1000 / 60;\\n' +\n'        if (elapsed > 60) {\\n' +\n'          sessionStorage.clear();\\n' +\n'          window.location.href = \"https://aladin-webapp.net/webhook/login\";\\n' +\n'        }\\n' +\n'      }\\n' +\n'      console.log(\"Auth check passed - User:\", sessionStorage.getItem(\"aladin_username\"));\\n' +\n'    })();\\n' +\n'  </script>\\n' +\n'  <style>\\n' +\n'    :root {\\n' +\n'      --bg: #0f172a;\\n' +\n'      --fg: #e5e7eb;\\n' +\n'      --muted: #94a3b8;\\n' +\n'      --accent: #ef4444;\\n' +\n'      --accent-2: #22c55e;\\n' +\n'      --card: #111827;\\n' +\n'      --border: #1f2937;\\n' +\n'      --input: #0b1220;\\n' +\n'      --focus: #3b82f6;\\n' +\n'    }\\n' +\n'    * { box-sizing: border-box; }\\n' +\n'    body {\\n' +\n'      margin: 0; padding: 2rem;\\n' +\n'      background: linear-gradient(180deg, var(--bg), #0b1020 60%, #050914);\\n' +\n'      color: var(--fg);\\n' +\n'      font-family: system-ui, -apple-system, Segoe UI, Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"Apple Color Emoji\", \"Segoe UI Emoji\";\\n' +\n'      min-height: 100vh;\\n' +\n'    }\\n' +\n'    .wrap { max-width: 780px; margin: 0 auto; }\\n' +\n'    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }\\n' +\n'    .brand { display: flex; align-items: center; gap: .75rem; font-weight: 700; letter-spacing: .5px; }\\n' +\n'    .brand .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; color: white; font-weight: 900; }\\n' +\n'    .subtitle { color: var(--muted); font-size: .95rem; margin-top: .25rem; }\\n' +\n'    .progress-bar { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }\\n' +\n'    .progress-bar::before { content: \"\"; position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--border); transform: translateY(-50%); z-index: 0; }\\n' +\n'    .progress-step { flex: 1; text-align: center; position: relative; z-index: 1; }\\n' +\n'    .progress-step-circle { width: 32px; height: 32px; border-radius: 50%; background: var(--border); margin: 0 auto 0.5rem; display: grid; place-items: center; font-size: .85rem; font-weight: 600; transition: all .2s; }\\n' +\n'    .progress-step.active .progress-step-circle { background: var(--accent); color: white; }\\n' +\n'    .progress-step.completed .progress-step-circle { background: var(--accent-2); color: white; }\\n' +\n'    .progress-step span { font-size: .85rem; color: var(--muted); display: block; }\\n' +\n'    .progress-step.active span { color: var(--fg); font-weight: 600; }\\n' +\n'    .card { background: rgba(17,24,39,.7); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; backdrop-filter: blur(6px); box-shadow: 0 6px 24px rgba(0,0,0,.35); }\\n' +\n'    .card h2 { margin: 0 0 .5rem 0; font-size: 1.5rem; color: var(--fg); }\\n' +\n'    .card p { margin: 0 0 2rem 0; color: var(--muted); font-size: .95rem; }\\n' +\n'    form { display: grid; gap: 1.25rem; }\\n' +\n'    .form-group { display: flex; flex-direction: column; }\\n' +\n'    .form-row { display: grid; gap: 1.25rem; grid-template-columns: 1fr 1fr; }\\n' +\n'    label { display: block; font-size: .9rem; color: var(--muted); margin-bottom: .5rem; font-weight: 500; }\\n' +\n'    label .required { color: var(--accent); }\\n' +\n'    input[type=\"text\"], input[type=\"tel\"] { width: 100%; background: var(--input); color: var(--fg); border: 1px solid var(--border); border-radius: .75rem; padding: .85rem 1rem; outline: none; transition: border .15s, box-shadow .15s; font-size: .95rem; }\\n' +\n'    input:focus { border-color: var(--focus); box-shadow: 0 0 0 3px rgba(59,130,246,.25); }\\n' +\n'    input.error { border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important; }\\n' +\n'    .hint { font-size: .8rem; color: var(--muted); margin-top: .35rem; }\\n' +\n'    .actions { display: flex; gap: .75rem; justify-content: flex-end; margin-top: 1rem; }\\n' +\n'    button { appearance: none; border: none; border-radius: .75rem; padding: .9rem 1.5rem; font-weight: 600; cursor: pointer; transition: transform .04s ease, box-shadow .15s ease, opacity .15s; font-size: .95rem; }\\n' +\n'    .btn-primary { background: linear-gradient(180deg, #ef4444, #dc2626); color: white; box-shadow: 0 10px 24px rgba(239,68,68,.35); min-width: 140px; }\\n' +\n'    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(239,68,68,.45); }\\n' +\n'    .btn-primary:active { transform: translateY(0); }\\n' +\n'    .btn-primary:disabled { background: #6b7280; cursor: not-allowed; transform: none; opacity: .6; }\\n' +\n'    .btn-primary.success { background: linear-gradient(180deg, #22c55e, #16a34a) !important; }\\n' +\n'    .btn-primary.error { background: linear-gradient(180deg, #ef4444, #dc2626) !important; }\\n' +\n'    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }\\n' +\n'    .btn-ghost:hover { background: rgba(255,255,255,.05); }\\n' +\n'    .error-message { background: rgba(239, 68, 68, 0.1); color: var(--accent); padding: 1rem; border-radius: .75rem; margin-bottom: 1rem; font-size: .9rem; border-left: 4px solid var(--accent); display: none; }\\n' +\n'    .error-message.show { display: block; }\\n' +\n'    @media (max-width: 720px) { .form-row { grid-template-columns: 1fr; } }\\n' +\n'  </style>\\n' +\n'</head>\\n' +\n'<body>\\n' +\n'  <div class=\"wrap\">\\n' +\n'    <header>\\n' +\n'      <div class=\"brand\">\\n' +\n'        <div class=\"logo\" aria-hidden=\"true\">A</div>\\n' +\n'        <div>\\n' +\n'          <div style=\"font-size:1.15rem;\">Danfoss ALADIN</div>\\n' +\n'          <div class=\"subtitle\">Customer Information Collection</div>\\n' +\n'        </div>\\n' +\n'      </div>\\n' +\n'    </header>\\n' +\n'\\n' +\n'    <div class=\"progress-bar\">\\n' +\n'      <div class=\"progress-step active\">\\n' +\n'        <div class=\"progress-step-circle\">1</div>\\n' +\n'        <span>Customer Info</span>\\n' +\n'      </div>\\n' +\n'      <div class=\"progress-step\">\\n' +\n'        <div class=\"progress-step-circle\">2</div>\\n' +\n'        <span>Motor Details</span>\\n' +\n'      </div>\\n' +\n'      <div class=\"progress-step\">\\n' +\n'        <div class=\"progress-step-circle\">3</div>\\n' +\n'        <span>Configuration</span>\\n' +\n'      </div>\\n' +\n'    </div>\\n' +\n'\\n' +\n'    <section class=\"card\">\\n' +\n'      <h2>Customer Information</h2>\\n' +\n'      <p>Please provide the following details to continue</p>\\n' +\n'\\n' +\n'      <div id=\"errorMessage\" class=\"error-message\"></div>\\n' +\n'\\n' +\n'      <form id=\"customer-form\" novalidate>\\n' +\n'        <div class=\"form-row\">\\n' +\n'          <div class=\"form-group\">\\n' +\n'            <label for=\"customerName\">Customer Name <span class=\"required\">*</span></label>\\n' +\n'            <input id=\"customerName\" name=\"customerName\" type=\"text\" placeholder=\"e.g., ABC Industries\" required />\\n' +\n'          </div>\\n' +\n'          <div class=\"form-group\">\\n' +\n'            <label for=\"projectName\">Project Name <span class=\"required\">*</span></label>\\n' +\n'            <input id=\"projectName\" name=\"projectName\" type=\"text\" placeholder=\"e.g., HVAC System Upgrade\" required />\\n' +\n'          </div>\\n' +\n'        </div>\\n' +\n'\\n' +\n'        <div class=\"form-row\">\\n' +\n'          <div class=\"form-group\">\\n' +\n'            <label for=\"locationOfInstallation\">Location of Installation <span class=\"required\">*</span></label>\\n' +\n'            <input id=\"locationOfInstallation\" name=\"locationOfInstallation\" type=\"text\" placeholder=\"e.g., Copenhagen, Denmark\" required />\\n' +\n'          </div>\\n' +\n'          <div class=\"form-group\">\\n' +\n'            <label for=\"applicationType\">Application Type <span class=\"required\">*</span></label>\\n' +\n'            <input id=\"applicationType\" name=\"applicationType\" type=\"text\" placeholder=\"e.g., Industrial Cooling\" required />\\n' +\n'          </div>\\n' +\n'        </div>\\n' +\n'\\n' +\n'        <div class=\"form-row\">\\n' +\n'          <div class=\"form-group\">\\n' +\n'            <label for=\"contactPerson\">Contact Person <span class=\"required\">*</span></label>\\n' +\n'            <input id=\"contactPerson\" name=\"contactPerson\" type=\"text\" placeholder=\"e.g., John Doe\" required />\\n' +\n'          </div>\\n' +\n'          <div class=\"form-group\">\\n' +\n'            <label for=\"mobileNumber\">Mobile Number <span class=\"required\">*</span></label>\\n' +\n'            <input id=\"mobileNumber\" name=\"mobileNumber\" type=\"tel\" placeholder=\"e.g., +45 1234 5678\" required />\\n' +\n'            <div class=\"hint\">Include country code for international numbers</div>\\n' +\n'          </div>\\n' +\n'        </div>\\n' +\n'\\n' +\n'        <div class=\"actions\">\\n' +\n'          <button id=\"resetBtn\" class=\"btn-ghost\" type=\"button\">Reset</button>\\n' +\n'          <button id=\"nextBtn\" class=\"btn-primary\" type=\"submit\">Next →</button>\\n' +\n'        </div>\\n' +\n'      </form>\\n' +\n'    </section>\\n' +\n'  </div>\\n' +\n'\\n' +\n'  <script>\\n' +\n'    var CONFIG = {\\n' +\n'      NEXT_PAGE_URL: \"http://localhost:5678/webhook-test/motor_config\",\\n' +\n'      DRAFT_SAVE_API_URL: \"http://localhost:5678/webhook-test/save-draft\",\\n' +\n'      REQUIRED_FIELDS: [\\n' +\n'        { id: \"customerName\", label: \"Customer Name\" },\\n' +\n'        { id: \"projectName\", label: \"Project Name\" },\\n' +\n'        { id: \"locationOfInstallation\", label: \"Location of Installation\" },\\n' +\n'        { id: \"applicationType\", label: \"Application Type\" },\\n' +\n'        { id: \"contactPerson\", label: \"Contact Person\" },\\n' +\n'        { id: \"mobileNumber\", label: \"Mobile Number\" }\\n' +\n'      ]\\n' +\n'    };\\n' +\n'\\n' +\n'    var DOM = {\\n' +\n'      form: document.getElementById(\"customer-form\"),\\n' +\n'      nextBtn: document.getElementById(\"nextBtn\"),\\n' +\n'      resetBtn: document.getElementById(\"resetBtn\"),\\n' +\n'      errorMessage: document.getElementById(\"errorMessage\")\\n' +\n'    };\\n' +\n'\\n' +\n'    var Utils = {\\n' +\n'      showError: function(message) {\\n' +\n'        DOM.errorMessage.textContent = message;\\n' +\n'        DOM.errorMessage.classList.add(\"show\");\\n' +\n'        setTimeout(function() {\\n' +\n'          DOM.errorMessage.classList.remove(\"show\");\\n' +\n'        }, 5000);\\n' +\n'      },\\n' +\n'      clearErrors: function() {\\n' +\n'        DOM.errorMessage.classList.remove(\"show\");\\n' +\n'        var inputs = DOM.form.querySelectorAll(\"input\");\\n' +\n'        for (var i = 0; i < inputs.length; i++) {\\n' +\n'          inputs[i].classList.remove(\"error\");\\n' +\n'        }\\n' +\n'      },\\n' +\n'      isValidPhoneNumber: function(phone) {\\n' +\n'        var phoneRegex = /^[\\\\+]?[\\\\d\\\\s\\\\-\\\\(\\\\)]{10,}$/;\\n' +\n'        return phoneRegex.test(phone);\\n' +\n'      }\\n' +\n'    };\\n' +\n'\\n' +\n'    var Validator = {\\n' +\n'      validateForm: function() {\\n' +\n'        var data = {};\\n' +\n'        var errors = [];\\n' +\n'        \\n' +\n'        for (var i = 0; i < CONFIG.REQUIRED_FIELDS.length; i++) {\\n' +\n'          var field = CONFIG.REQUIRED_FIELDS[i];\\n' +\n'          var element = document.getElementById(field.id);\\n' +\n'          var value = (element.value || \"\").trim();\\n' +\n'          \\n' +\n'          if (!value) {\\n' +\n'            errors.push(field.label + \" is required\");\\n' +\n'            element.classList.add(\"error\");\\n' +\n'          } else {\\n' +\n'            element.classList.remove(\"error\");\\n' +\n'            data[field.id] = value;\\n' +\n'            \\n' +\n'            if (field.id === \"mobileNumber\" && !Utils.isValidPhoneNumber(value)) {\\n' +\n'              errors.push(\"Mobile Number format is invalid\");\\n' +\n'              element.classList.add(\"error\");\\n' +\n'            }\\n' +\n'          }\\n' +\n'        }\\n' +\n'        \\n' +\n'        if (errors.length > 0) {\\n' +\n'          throw new Error(errors.join(\", \"));\\n' +\n'        }\\n' +\n'        \\n' +\n'        return data;\\n' +\n'      }\\n' +\n'    };\\n' +\n'\\n' +\n'    var FormHandler = {\\n' +\n'      createOutputObject: function(data) {\\n' +\n'        return {\\n' +\n'          customerName: data.customerName,\\n' +\n'          locationOfInstallation: data.locationOfInstallation,\\n' +\n'          projectName: data.projectName,\\n' +\n'          contactPerson: data.contactPerson,\\n' +\n'          mobileNumber: data.mobileNumber,\\n' +\n'          applicationType: data.applicationType,\\n' +\n'          createdAt: new Date().toISOString()\\n' +\n'        };\\n' +\n'      },\\n' +\n'      saveToSessionStorage: function(outputData) {\\n' +\n'        sessionStorage.setItem(\"aladin_customer_data\", JSON.stringify(outputData));\\n' +\n'        console.log(\"Customer data saved:\", outputData);\\n' +\n'      },\\n' +\n'      saveToDraftAPI: async function(outputData) {\\n' +\n'        var draftId = sessionStorage.getItem(\"aladin_draft_id\") || null;\\n' +\n'        \\n' +\n'        var payload = {\\n' +\n'          draft_id: draftId,\\n' +\n'          page_number: 1,\\n' +\n'          page_data: outputData,\\n' +\n'          metadata: {\\n' +\n'            username: sessionStorage.getItem(\"aladin_username\"),\\n' +\n'            timestamp: new Date().toISOString()\\n' +\n'          }\\n' +\n'        };\\n' +\n'        \\n' +\n'        try {\\n' +\n'          var response = await fetch(CONFIG.DRAFT_SAVE_API_URL, {\\n' +\n'            method: \"POST\",\\n' +\n'            headers: { \"Content-Type\": \"application/json\" },\\n' +\n'            body: JSON.stringify(payload)\\n' +\n'          });\\n' +\n'          \\n' +\n'          var result = await response.json();\\n' +\n'          \\n' +\n'          if (response.ok && result.success) {\\n' +\n'            sessionStorage.setItem(\"aladin_draft_id\", result.data.draft_id);\\n' +\n'            return { success: true, data: result.data };\\n' +\n'          } else {\\n' +\n'            return { \\n' +\n'              success: false, \\n' +\n'              error: result.error || result.message || \"Failed to save draft\" \\n' +\n'            };\\n' +\n'          }\\n' +\n'        } catch (error) {\\n' +\n'          return { \\n' +\n'            success: false, \\n' +\n'            error: \"Network error: \" + error.message \\n' +\n'          };\\n' +\n'        }\\n' +\n'      },\\n' +\n'      handleSubmit: function(event) {\\n' +\n'        event.preventDefault();\\n' +\n'        Utils.clearErrors();\\n' +\n'        \\n' +\n'        try {\\n' +\n'          var formData = Validator.validateForm();\\n' +\n'          var outputData = FormHandler.createOutputObject(formData);\\n' +\n'          \\n' +\n'          DOM.nextBtn.disabled = true;\\n' +\n'          DOM.nextBtn.textContent = \"Saving...\";\\n' +\n'          \\n' +\n'          FormHandler.saveToDraftAPI(outputData).then(function(result) {\\n' +\n'            if (result.success) {\\n' +\n'              FormHandler.saveToSessionStorage(outputData);\\n' +\n'              \\n' +\n'              DOM.nextBtn.innerHTML = \"✓ Saved! Redirecting...\";\\n' +\n'              DOM.nextBtn.classList.add(\"success\");\\n' +\n'              \\n' +\n'              console.log(\"Draft saved successfully:\", result.data);\\n' +\n'              \\n' +\n'              setTimeout(function() {\\n' +\n'                window.location.href = CONFIG.NEXT_PAGE_URL;\\n' +\n'              }, 800);\\n' +\n'              \\n' +\n'            } else {\\n' +\n'              throw new Error(result.error);\\n' +\n'            }\\n' +\n'          }).catch(function(error) {\\n' +\n'            DOM.nextBtn.disabled = false;\\n' +\n'            DOM.nextBtn.textContent = \"Next →\";\\n' +\n'            DOM.nextBtn.classList.remove(\"success\");\\n' +\n'            Utils.showError(error.message || \"Failed to save draft. Please try again.\");\\n' +\n'            console.error(\"Draft save error:\", error);\\n' +\n'          });\\n' +\n'          \\n' +\n'        } catch (error) {\\n' +\n'          Utils.showError(error.message || \"Please fill in all required fields correctly\");\\n' +\n'          console.error(\"Form validation error:\", error);\\n' +\n'        }\\n' +\n'      },\\n' +\n'      handleReset: function() {\\n' +\n'        DOM.form.reset();\\n' +\n'        Utils.clearErrors();\\n' +\n'      }\\n' +\n'    };\\n' +\n'\\n' +\n'    function loadSavedData() {\\n' +\n'      try {\\n' +\n'        var savedData = sessionStorage.getItem(\"aladin_customer_data\");\\n' +\n'        if (savedData) {\\n' +\n'          var data = JSON.parse(savedData);\\n' +\n'          for (var key in data) {\\n' +\n'            if (data.hasOwnProperty(key) && key !== \"createdAt\") {\\n' +\n'              var element = document.getElementById(key);\\n' +\n'              if (element) element.value = data[key];\\n' +\n'            }\\n' +\n'          }\\n' +\n'          console.log(\"Loaded saved customer data\");\\n' +\n'        }\\n' +\n'      } catch (error) {\\n' +\n'        console.error(\"Error loading saved data:\", error);\\n' +\n'      }\\n' +\n'    }\\n' +\n'\\n' +\n'    function init() {\\n' +\n'      DOM.form.addEventListener(\"submit\", FormHandler.handleSubmit);\\n' +\n'      DOM.resetBtn.addEventListener(\"click\", FormHandler.handleReset);\\n' +\n'      \\n' +\n'      var inputs = DOM.form.querySelectorAll(\"input\");\\n' +\n'      for (var i = 0; i < inputs.length; i++) {\\n' +\n'        inputs[i].addEventListener(\"input\", function() {\\n' +\n'          this.classList.remove(\"error\");\\n' +\n'        });\\n' +\n'      }\\n' +\n'      \\n' +\n'      loadSavedData();\\n' +\n'      console.log(\"Danfoss ALADIN customer form initialized\");\\n' +\n'    }\\n' +\n'    \\n' +\n'    init();\\n' +\n'  </' + 'script>\\n' +\n'</body>\\n' +\n'</html>';\n\nvar html = htmlPart1;\n\nreturn [\n  {\n    json: {},\n    binary: {\n      data: {\n        data: Buffer.from(html).toString('base64'),\n        mimeType: 'text/html',\n        fileName: 'customer-input.html'\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        0
+      ],
+      "id": "3afba322-2c5f-44c6-979d-00d6779daf9f",
+      "name": "Customer Input - UI"
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "responseDataSource": "set",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        112,
+        0
+      ],
+      "id": "44d4026f-cd32-4e16-bfb3-1d5c7946dcdf",
+      "name": "Customer Input - Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "path": "motor_config",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -304,
+        224
+      ],
+      "id": "be21b66f-9194-445e-a5f4-f3474960e745",
+      "name": "Motor Configuration - Webhook",
+      "webhookId": "58ac063e-922f-429a-be55-8a8ed1c67ab8"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "save-draft",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        592,
+        -64
+      ],
+      "id": "701de538-c026-4304-937b-69a7fb976ad3",
+      "name": "Draft Save API - Webhook",
+      "webhookId": "8876eee4-697f-4778-b165-53c1de679dbe"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node: Draft Save - Process & Build SQL\n// This node combines validation and SQL building for the Draft Save API\n\n// Extract request body - handle different webhook configurations\nconst inputData = $input.item.json;\n\n// Try to get data from body first (Raw Body enabled), then from root\nlet requestData;\ntry {\n  if (inputData.body) {\n    // Raw Body is enabled - body is a string\n    requestData = typeof inputData.body === 'string' ? JSON.parse(inputData.body) : inputData.body;\n  } else if (inputData.draft_id !== undefined || inputData.page_number !== undefined) {\n    // Data is directly in the root (Raw Body disabled)\n    requestData = inputData;\n  } else {\n    throw new Error('No valid request data found');\n  }\n} catch (error) {\n  return {\n    json: {\n      _error: true,\n      success: false,\n      error: 'Invalid JSON format: ' + error.message,\n      statusCode: 400\n    }\n  };\n}\n\n// Debug logging - remove after testing\nconsole.log('Input data structure:', JSON.stringify(inputData, null, 2));\nconsole.log('Parsed request data:', JSON.stringify(requestData, null, 2));\n\n// Validate required inputs\nconst pageNumber = requestData.page_number;\nconst pageData = requestData.page_data;\n\nif (!pageNumber || pageNumber < 1 || pageNumber > 4) {\n  return {\n    json: {\n      _error: true,\n      success: false,\n      error: 'page_number must be between 1 and 4',\n      statusCode: 400\n    }\n  };\n}\n\nif (!pageData || typeof pageData !== 'object') {\n  return {\n    json: {\n      _error: true,\n      success: false,\n      error: 'page_data is required and must be an object',\n      statusCode: 400\n    }\n  };\n}\n\n// Generate or use existing draft_id\n// n8n vm2 sandbox doesn't support require('crypto'), so we generate UUID manually\nfunction generateUUID() {\n  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\n    const r = Math.random() * 16 | 0;\n    const v = c === 'x' ? r : (r & 0x3 | 0x8);\n    return v.toString(16);\n  });\n}\n\nconst draftId = requestData.draft_id || generateUUID();\nconst timestamp = new Date().toISOString();\nconst isNew = !requestData.draft_id;\n\n// Map page number to database column\nconst pageColumns = {\n  1: 'customerinput_pg1',\n  2: 'motorconfig_pg2',\n  3: 'vfdconfig_pg3',\n  4: 'drawingconfig_pg4'\n};\nconst columnName = pageColumns[pageNumber];\n\n// Build metadata JSON that will be returned by PostgreSQL\n// Escape single quotes for SQL safety\nconst metadataJson = JSON.stringify({\n  page_number: pageNumber,\n  column_name: columnName,\n  is_new: isNew\n}).replace(/'/g, \"''\");\n\n// Build SQL UPSERT query with metadata in RETURNING clause\n// The metadata is returned as a JSON literal so it survives PostgreSQL execution\nconst query = `\nINSERT INTO draft_form (draft_id, current_page, ${columnName}, created_at, updated_at)\nVALUES ($1, $2, $3::jsonb, $4, $4)\nON CONFLICT (draft_id) \nDO UPDATE SET current_page = $2, ${columnName} = $3::jsonb, updated_at = $4\nRETURNING \n  draft_id, \n  current_page, \n  created_at, \n  updated_at,\n  '${metadataJson}'::jsonb as _metadata;\n`;\n\n// Prepare parameterized query values (prevents SQL injection)\nconst parameters = [\n  draftId,                      // $1\n  pageNumber,                   // $2\n  JSON.stringify(pageData),     // $3 (converted to JSONB)\n  timestamp                     // $4\n];\n\n// Return data for PostgreSQL node\nreturn {\n  json: {\n    query: query,\n    parameters: parameters\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        -64
+      ],
+      "id": "cdbaef13-26ab-45b0-bd43-22d7320df3d4",
+      "name": "Draft Save API  – SQL Builder"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json._error ? { success: false, error: $json.error } : { success: true, message: $json._metadata.is_new ? 'Draft created successfully' : 'Draft updated successfully', data: { draft_id: $json.draft_id, current_page: $json.current_page, page_saved: $json._metadata.page_number, updated_at: $json.updated_at } } }}",
+        "options": {
+          "responseCode": "={{ $json._error ? $json.statusCode : 200 }}",
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1264,
+        -64
+      ],
+      "id": "e627b144-ec52-4e8d-8640-c33a8dab2037",
+      "name": " Draft Save API - Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.query }}",
+        "options": {
+          "queryReplacement": "={{ $json.parameters }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1056,
+        -64
+      ],
+      "id": "2ebad24a-3367-44ff-a809-75b66787689e",
+      "name": "Postgre - Execute Draft Save",
+      "credentials": {
+        "postgres": {
+          "id": "pdnxxGX21DNBcgBg",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Motor Configuration UI - n8n Code Node\n// SAFE VERSION (vm2 compatible – emojis removed)\n\nvar html = '<!DOCTYPE html>\\n' +\n'<html lang=\"en\">\\n' +\n'<head>\\n' +\n'  <meta charset=\"UTF-8\">\\n' +\n'  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\\n' +\n'  <title>Motor Configuration - Danfoss ALADIN</title>\\n' +\n\n'  <style>\\n' +\n'    body { margin:0; padding:20px; font-family: Arial, sans-serif; background:#0f172a; color:#e5e7eb; }\\n' +\n'    .card { background:#111827; padding:20px; border-radius:10px; }\\n' +\n'    .mode-btn { padding:10px; margin-right:10px; cursor:pointer; }\\n' +\n'    .mode-btn.active { background:#ef4444; color:#fff; }\\n' +\n'    .mode-content { display:none; }\\n' +\n'    .mode-content.active { display:block; }\\n' +\n'    .upload-area { border:2px dashed #ef4444; padding:30px; text-align:center; cursor:pointer; }\\n' +\n'    .form-group { margin-bottom:15px; }\\n' +\n'    input, select { width:100%; padding:8px; }\\n' +\n'    .btn { padding:10px; margin-top:10px; width:100%; cursor:pointer; }\\n' +\n'    .btn-primary { background:#ef4444; color:#fff; border:none; }\\n' +\n'    .success-message { color:#22c55e; display:none; }\\n' +\n'  </style>\\n' +\n'</head>\\n' +\n\n'<body>\\n' +\n'<div class=\"card\">\\n' +\n'  <h2>Motor Configuration</h2>\\n' +\n\n'  <button class=\"mode-btn active\" onclick=\"switchMode(\\'auto\\', this)\">Auto Config Mode</button>\\n' +\n'  <button class=\"mode-btn\" onclick=\"switchMode(\\'manual\\', this)\">Manual Config Mode</button>\\n' +\n\n'  <div id=\"autoMode\" class=\"mode-content active\">\\n' +\n'    <div class=\"upload-area\" onclick=\"document.getElementById(\\'imageInput\\').click()\">\\n' +\n'      Click to upload Motor Nameplate Image\\n' +\n'      <input type=\"file\" id=\"imageInput\" style=\"display:none\">\\n' +\n'    </div>\\n' +\n'    <button class=\"btn btn-primary\" onclick=\"submitAuto()\">Submit Auto Config</button>\\n' +\n'  </div>\\n' +\n\n'  <div id=\"manualMode\" class=\"mode-content\">\\n' +\n'    <div class=\"form-group\">\\n' +\n'      <label>Motor Model</label>\\n' +\n'      <input id=\"motorModel\">\\n' +\n'    </div>\\n' +\n'    <div class=\"form-group\">\\n' +\n'      <label>Voltage</label>\\n' +\n'      <input id=\"voltage\" type=\"number\">\\n' +\n'    </div>\\n' +\n'    <div class=\"form-group\">\\n' +\n'      <label>Connection Type</label>\\n' +\n'      <select id=\"connection\">\\n' +\n'        <option value=\"STAR\">STAR</option>\\n' +\n'        <option value=\"DELTA\">DELTA</option>\\n' +\n'      </select>\\n' +\n'    </div>\\n' +\n'    <button class=\"btn btn-primary\" onclick=\"submitManual()\">Submit Manual Config</button>\\n' +\n'    <div id=\"manualSuccess\" class=\"success-message\">Configuration Saved</div>\\n' +\n'  </div>\\n' +\n'</div>\\n' +\n\n'<script>\\n' +\n'  var currentMode = \"auto\";\\n' +\n'  var CONFIG = { NEXT_PAGE_URL: \"http://localhost:5678/webhook-test/review\" };\\n' +\n\n'  function switchMode(mode, btn) {\\n' +\n'    currentMode = mode;\\n' +\n'    document.getElementById(\"autoMode\").classList.remove(\"active\");\\n' +\n'    document.getElementById(\"manualMode\").classList.remove(\"active\");\\n' +\n'    document.querySelectorAll(\".mode-btn\").forEach(b => b.classList.remove(\"active\"));\\n' +\n'    btn.classList.add(\"active\");\\n' +\n'    document.getElementById(mode + \"Mode\").classList.add(\"active\");\\n' +\n'  }\\n' +\n\n'  function submitAuto() {\\n' +\n'    var data = { mode:\"auto\", source:\"image\" };\\n' +\n'    sessionStorage.setItem(\"aladin_motor_config\", JSON.stringify(data));\\n' +\n'    window.location.href = CONFIG.NEXT_PAGE_URL;\\n' +\n'  }\\n' +\n\n'  function submitManual() {\\n' +\n'    var data = {\\n' +\n'      mode:\"manual\",\\n' +\n'      motor_model: document.getElementById(\"motorModel\").value,\\n' +\n'      voltage: document.getElementById(\"voltage\").value,\\n' +\n'      connection: document.getElementById(\"connection\").value\\n' +\n'    };\\n' +\n'    sessionStorage.setItem(\"aladin_motor_config\", JSON.stringify(data));\\n' +\n'    document.getElementById(\"manualSuccess\").style.display = \"block\";\\n' +\n'    setTimeout(() => window.location.href = CONFIG.NEXT_PAGE_URL, 1000);\\n' +\n'  }\\n' +\n'</script>\\n' +\n\n'</body>\\n' +\n'</html>';\n\nreturn [\n  {\n    json: {},\n    binary: {\n      data: {\n        data: Buffer.from(html).toString('base64'),\n        mimeType: 'text/html',\n        fileName: 'motor-config.html'\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        224
+      ],
+      "id": "949aea60-1dfa-4407-8acf-f725948ad724",
+      "name": "Motor Configuration - UI"
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        112,
+        224
+      ],
+      "id": "0cea3d28-33a8-4244-a90a-9770badaa349",
+      "name": "Motor Configuration - Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Login - Webhook": {
+      "main": [
+        [
+          {
+            "node": "Login Page - UI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Login Page - UI": {
+      "main": [
+        [
+          {
+            "node": "Login - Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Input - Webhook": {
+      "main": [
+        [
+          {
+            "node": "Customer Input - UI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Input - UI": {
+      "main": [
+        [
+          {
+            "node": "Customer Input - Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Motor Configuration - Webhook": {
+      "main": [
+        [
+          {
+            "node": "Motor Configuration - UI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft Save API - Webhook": {
+      "main": [
+        [
+          {
+            "node": "Draft Save API  – SQL Builder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft Save API  – SQL Builder": {
+      "main": [
+        [
+          {
+            "node": "Postgre - Execute Draft Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgre - Execute Draft Save": {
+      "main": [
+        [
+          {
+            "node": " Draft Save API - Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Motor Configuration - UI": {
+      "main": [
+        [
+          {
+            "node": "Motor Configuration - Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b33bf654-fff0-43e4-bf22-d42b1692aa40",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b78b247e3a024204946673f21d19d5a8878da2368dfcfa815213e4022545ca98"
+  },
+  "id": "q38bnZrzrqfZGaB0",
+  "tags": [
+    {
+      "name": "V0.1.0",
+      "id": "ZO1VNRKIi0DZMe2A",
+      "updatedAt": "2026-01-03T18:11:58.201Z",
+      "createdAt": "2026-01-03T18:11:58.201Z"
+    }
+  ]
+}
