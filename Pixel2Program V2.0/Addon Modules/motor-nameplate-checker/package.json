@@ -16,5 +16,5 @@
     "zod": "^4.2.1",
     "zod-to-json-schema": "^3.25.0"
   },
-  "type": "module"
+  "type": "commonjs"
 }
